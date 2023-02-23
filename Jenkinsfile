@@ -15,7 +15,7 @@ pipeline {
         }
         stage('build') {
             steps {
-                echo 'Build the app'
+                echo 'Build the app
             }
         }
         stage('unit tests') {
