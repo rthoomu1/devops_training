@@ -15,7 +15,8 @@ pipeline {
         }
         stage('build') {
             steps {
-                echo 'Build the app
+                echo 'Build the app'
+                sh 'lm'
             }
         }
         stage('unit tests') {
