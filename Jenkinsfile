@@ -2,32 +2,37 @@
 /* Requires the Docker Pipeline plugin */
 pipeline {
     agent { label 'jenkins_agent' }
+
+    parameters {
+        booleanParam(name: 'Deploy', defaultValue: 'false', description: "Would you like to deploy?")
+    }
+    environment {
+        APP_NAME = "analytics"
+    }
     stages {
         stage('checkout') {
             steps {
                 echo 'Checkout SCM'
+                sh "echo ${APP_NAME}"
             }
         }
         stage('clean') {
             steps {
-                echo 'clean the current dir'
+                script {
+                    if (APP_NAME == "ai") {
+                        echo "Running ibuild for ai"
+                    } else {
+                        echo 'clean the current dir'
+                        sh "echo ${APP_NAME}"
+                    }
+                }
             }
         }
-        stage('build') {
-            steps {
-                echo 'Build the app'
-                sh 'lm'
-            }
-        }
-        stage('unit tests') {
-            steps {
-                echo 'Run unit tests'
-            }
-        }
-        stage('Push Docker Image') {
-            steps {
-                echo 'Push Docker Image'
-            }
+    }
+    post {
+        always {
+            deleteDir()
+            cleanWs()
         }
     }
 }
