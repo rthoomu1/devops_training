@@ -3,9 +3,9 @@
 pipeline {
     agent { label 'jenkins_agent' }
     stages {
-        stage('build') {
+        stage('checkout') {
             steps {
-                echo 'hello world'
+                echo 'Checkout SCM'
             }
         }
         stage('clean') {
