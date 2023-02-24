@@ -12,18 +12,23 @@ pipeline {
     stages {
         stage('checkout') {
             steps {
+              script {
                 echo 'Checkout SCM'
-                sh "echo ${APP_NAME}"
+                echo "APP_NAME: ${APP_NAME}"
+                echo "${env.APP_NAME}"
+                sh "cp file1 file1.log"
+              }
             }
         }
         stage('clean') {
             steps {
                 script {
-                    if (APP_NAME == "ai") {
-                        echo "Running ibuild for ai"
+                     if ("${APP_NAME}" == 'ai') {
+                        echo "Running build for ai"
                     } else {
                         echo 'clean the current dir'
-                        sh "echo ${APP_NAME}"
+                        echo "APP_NAME ${env.APP_NAME}"
+                        build wait: false, job: 'ai-services/dev/ai-robot/main'
                     }
                 }
             }
@@ -31,8 +36,10 @@ pipeline {
     }
     post {
         always {
+            archiveArtifacts artifacts: '*.log', followSymlinks: false
             deleteDir()
             cleanWs()
+            emailext body: 'Git Branch: $GIT_BRANCH', subject: 'BUILD Status', to: 'rameshbabu.thoomu@gmail.com'
         }
     }
 }
