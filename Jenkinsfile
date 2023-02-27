@@ -28,7 +28,7 @@ pipeline {
                     } else {
                         echo 'clean the current dir'
                         echo "APP_NAME ${env.APP_NAME}"
-                        build wait: false, job: 'ai-services/dev/ai-robot/main'
+                        // build wait: false, job: 'ai-services/dev/ai-robot/main'
                     }
                 }
             }
